@@ -1,4 +1,4 @@
-# shop_client
+# shop_client_excirse
 
 ## Project setup
 ```
