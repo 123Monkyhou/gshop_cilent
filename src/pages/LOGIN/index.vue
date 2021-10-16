@@ -27,33 +27,43 @@
              :data="tableData" 
              :indent="0" 
              node-key="id" 
+             @node-contextmenu='rightclick'
+             @node-click='clicktree'
              >
     </el-tree>
   </div>
   
-  <el-upload
-  class="upload-demo"
-  action="https://jsonplaceholder.typicode.com/posts/"
-  :on-preview="handlePreview"
-  :on-remove="handleRemove"
-  :before-remove="beforeRemove"
-  multiple
-  :limit="3"
-  :on-exceed="handleExceed"
-  :file-list="fileList">
-  <el-button size="small" type="primary">点击上传</el-button>
-  <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-</el-upload>
-</div>
+      <el-upload
+      class="upload-demo"
+      action="https://jsonplaceholder.typicode.com/posts/"
+      :on-preview="handlePreview"
+      :on-remove="handleRemove"
+      :before-remove="beforeRemove"
+      multiple
+      :limit="3"
+      :on-exceed="handleExceed"
+      :file-list="fileList">
+      <el-button size="small" type="primary">点击上传</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+    </el-upload>
+    </div>
+
+    <right-menu id="rightmenu" v-show="rightmenuappeal"></right-menu>
    </div>
 </template>
 
 <script>
+import rightMenu from '../../components/rightMenu/rightMenu.vue'
 export default {
     name:'LOGIN',
+    components:{
+      // eslint-disable-next-line vue/no-unused-components
+      rightMenu
+    },
     data(){
     return {
         x:0,
+        rightmenuappeal:false,
         tabPosition: 'left',
         menus:['文书模板管理','语法模板管理','语句模板管理'],
         activeIndex: '1',
@@ -97,11 +107,32 @@ export default {
       handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
+      // eslint-disable-next-line no-unused-vars
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
       todrap(){
         this.$router.push('')
+      },
+      rightclick(e){
+         let that = this
+        this.rightmenuappeal = true
+        console.log(e.target)
+        let rightmenus = document.getElementById('rightmenu')
+        rightmenus.style.position = 'absolute'
+        rightmenus.style.top = e.clientY + 'px'
+        rightmenus.style.left = e.clientX + 'px'
+       
+        document.addEventListener('click',(e)=>{
+          console.log(e.target)
+          if(e.target != document.getElementById('rightmenu')){
+             that.rightmenuappeal = false
+          }
+        }
+        )
+      },
+      clicktree(){
+         this.rightmenuappeal = false
       }
      }
     
@@ -112,50 +143,5 @@ export default {
 </script>
 
  <style>
-	.tree .el-tree-node {
-    position: relative;
-    padding-left: 16px;
-  }
-  .tree-container .el-tree>.el-tree-node:after {
-    border-top: none;
-}
-  .tree .el-tree-node__children {
-    padding-left: 16px;
-  }
-    .tree .el-tree-node :last-child:before {
-    height: 38px;
-  }
-    .tree .el-tree-node:before {
-    content: "";
-    left: -8px;
-    position: absolute;
-    right: auto;
-    border-width: 1px;
-     border-left: 1px dashed black;
-    bottom: 0px;
-    height: 100%;
-    top: -25px;
-    width: 1px;
-  }
-    .tree .el-tree-node:after {
-    content: "";
-    left: -4px;
-    position: absolute;
-    right: auto;
-    border-width: 1px;
-     border-top: 1px dashed black;
-    height: 20px;
-    top: 12px;
-    width: 24px;
-  }
-   .tree .el-tree> .el-tree-node:before {
-    border-left: none;
-  }
-  .el-tree > .el-tree-node:before {
-    border-left: none;
-  }
-  .el-tree> .el-tree-node:after {
-    border-top: none;
-  }
-  
+	@import url('./index.css');
 </style>
