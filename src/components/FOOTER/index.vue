@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper">
-
+      <h1>This is Footer</h1>
   </div>
 </template>
 

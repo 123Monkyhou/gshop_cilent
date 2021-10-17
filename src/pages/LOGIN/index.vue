@@ -1,5 +1,8 @@
 <template>
   <div class="wrapper">
+    <Header></Header>
+    <router-view></router-view>
+    <Footer></Footer>
   <el-tabs :tab-position="tabPosition" style="height: 200px;">
     <el-tab-pane label="用户管理">用户管理</el-tab-pane>
     <el-tab-pane label="配置管理">配置管理</el-tab-pane>
@@ -54,11 +57,16 @@
 
 <script>
 import rightMenu from '../../components/rightMenu/rightMenu.vue'
+import Header from '@/components/HEADER'
+import Footer from '@/components/FOOTER'
+
 export default {
     name:'LOGIN',
     components:{
       // eslint-disable-next-line vue/no-unused-components
-      rightMenu
+      rightMenu,
+      Header,
+      Footer
     },
     data(){
     return {
